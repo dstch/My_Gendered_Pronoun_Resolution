@@ -11,6 +11,13 @@
 
 import os
 
+os.system('!pip install pytorch-pretrained-bert')
+os.system('!pip install allennlp')
+os.system('!pip install https://github.com/ceshine/pytorch_helper_bot/archive/0.0.5.zip')
+os.system('!wget https://github.com/google-research-datasets/gap-coreference/raw/master/gap-development.tsv -q')
+os.system('!wget https://github.com/google-research-datasets/gap-coreference/raw/master/gap-test.tsv -q')
+os.system('!wget https://github.com/google-research-datasets/gap-coreference/raw/master/gap-validation.tsv -q')
+
 # This variable is used by helperbot to make the training deterministic
 os.environ["SEED"] = "1828"
 
@@ -154,8 +161,8 @@ def collate_examples(batch, truncate_len=490):
     token_tensor = torch.from_numpy(tokens)
     # Offsets
     offsets = torch.stack([
-                              torch.LongTensor(x) for x in transposed[1]
-                              ], dim=0) + 1  # Account for the [CLS] token
+        torch.LongTensor(x) for x in transposed[1]
+    ], dim=0) + 1  # Account for the [CLS] token
     # Labels
     if len(transposed) == 2:
         return token_tensor, offsets, None
@@ -185,7 +192,6 @@ class GAPModel(nn.Module):
             token_type_ids=None, output_all_encoded_layers=False)
         head_outputs = self.head(bert_outputs, offsets.to(self.device))
         return head_outputs
-
 
         # Adapted from fast.ai library
 
@@ -239,7 +245,7 @@ class GAPBot(BaseBot):
         self.logger.tb_scalars(
             "losses", {"val": loss}, self.step)
         target_path = (
-            self.checkpoint_dir / "best.pth")
+                self.checkpoint_dir / "best.pth")
         if not self.best_performers or (self.best_performers[0][0] > loss):
             torch.save(self.model.state_dict(), target_path)
             self.best_performers = [(loss, target_path, self.step)]
