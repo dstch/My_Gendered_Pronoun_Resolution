@@ -11,12 +11,12 @@
 
 import os
 
-os.system('!pip install pytorch-pretrained-bert')
-os.system('!pip install allennlp')
-os.system('!pip install https://github.com/ceshine/pytorch_helper_bot/archive/0.0.5.zip')
-os.system('!wget https://github.com/google-research-datasets/gap-coreference/raw/master/gap-development.tsv -q')
-os.system('!wget https://github.com/google-research-datasets/gap-coreference/raw/master/gap-test.tsv -q')
-os.system('!wget https://github.com/google-research-datasets/gap-coreference/raw/master/gap-validation.tsv -q')
+# os.system('!pip install pytorch-pretrained-bert')
+# os.system('!pip install allennlp')
+# os.system('!pip install https://github.com/ceshine/pytorch_helper_bot/archive/0.0.5.zip')
+# os.system('!wget https://github.com/google-research-datasets/gap-coreference/raw/master/gap-development.tsv -q')
+# os.system('!wget https://github.com/google-research-datasets/gap-coreference/raw/master/gap-test.tsv -q')
+# os.system('!wget https://github.com/google-research-datasets/gap-coreference/raw/master/gap-validation.tsv -q')
 
 # This variable is used by helperbot to make the training deterministic
 os.environ["SEED"] = "1828"
@@ -271,7 +271,7 @@ df_train = pd.concat([
 df_test = pd.read_csv("gap-development.tsv", delimiter="\t")
 df_train = extract_target(df_train)
 df_test = extract_target(df_test)
-sample_sub = pd.read_csv("../input/sample_submission_stage_1.csv")
+sample_sub = pd.read_csv("sample_submission_stage_1.csv")
 assert sample_sub.shape[0] == df_test.shape[0]
 
 tokenizer = BertTokenizer.from_pretrained(
